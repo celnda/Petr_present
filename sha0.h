@@ -146,5 +146,8 @@ extern int SHA0FinalBits(SHA0Context *, uint8_t bits,
                          unsigned int bit_count);
 extern int SHA0Result(SHA0Context *,
                       uint8_t Message_Digest[SHA0HashSize]);
+void get_hash(const uint8_t *message,
+              unsigned int length,
+              uint8_t hash[SHA0HashSize]);
 
 #endif /* _SHA0_H_ */

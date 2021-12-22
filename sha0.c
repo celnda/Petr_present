@@ -39,6 +39,7 @@
 
 #include "sha0.h"
 #include "sha-private.h"
+// #include "stdio.h"
 
 /*
  *  Define the SHA0 circular left shift macro
@@ -129,6 +130,12 @@ int SHA0Input(SHA0Context *context,
   if (!message_array) return shaNull;
   if (context->Computed) return context->Corrupted = shaStateError;
   if (context->Corrupted) return context->Corrupted;
+
+  // DEBUG
+  // for (int i=0; i< length; i++)
+  // {
+  //   printf("%c", message_array[i]);
+  // }
 
   while (length--) {
     context->Message_Block[context->Message_Block_Index++] =
@@ -231,6 +238,16 @@ int SHA0Result(SHA0Context *context,
                                    >> (8 * ( 3 - ( i & 0x03 ) )));
 
   return shaSuccess;
+}
+
+
+void get_hash(const uint8_t *message, unsigned int length, uint8_t hash[SHA0HashSize])
+{
+  SHA0Context ctx;
+  SHA0Reset(&ctx);
+  SHA0Input(&ctx, message, length);
+  SHA0FinalBits(&ctx, 0, 0);  
+  SHA0Result(&ctx, hash); 
 }
 
 /*

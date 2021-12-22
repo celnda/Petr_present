@@ -4,52 +4,50 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "sha0.h"
+#include "string.h"
+#include "time.h"
+
+
+// void get_hash(const uint8_t *message, size_t length, uint8_t hash[SHA0HashSize])
+// {
+// 	SHA0Context ctx;
+// 	SHA0Reset(&ctx);
+// 	SHA0Input(&ctx, message, length);
+// 	SHA0FinalBits(&ctx, 0, 0);	
+// 	SHA0Result(&ctx, hash);	
+// }
+
 
 int main(int argc, char **argv) {
+	// clock_t tic = clock(); // TIMING
 	if (argc != 2) {
-		fprintf(stderr, "%s [filename]\n", argv[0]);
+		fprintf(stderr, "%s [input_str]\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
-	const char *infile = argv[1];
+	
+	unsigned int r = strlen(argv[1]);
+	// if (r <= 0) {
+	// 	fprintf(stderr, "%s [length(input_str)>0]\n", argv[0]);		
+	// 	exit(EXIT_FAILURE);
+	// }
+	const uint8_t *in_message = (uint8_t*)argv[1];
 
-	struct stat statbuf;
-	if (stat(infile, &statbuf)) {
-		perror(infile);
-		exit(EXIT_FAILURE);
-	}
+	// SHA0Context ctx;
+	// SHA0Reset(&ctx);
 
-	SHA0Context ctx;
-	SHA0Reset(&ctx);
+	// fprintf(stderr, "SHA0 over %ld bytes: ", r);
 
-
-
-	FILE *f = fopen(infile, "r");
-	if (!f) {
-		perror("data");
-		exit(EXIT_FAILURE);
-	}
-
-	uint8_t *buffer = malloc(statbuf.st_size);
-	if (!buffer) {
-		perror("malloc");
-		exit(EXIT_FAILURE);
-	}
-	size_t r = fread(buffer, 1, statbuf.st_size, f);
-	if (r != statbuf.st_size) {
-		perror("short read");
-		exit(EXIT_FAILURE);
-	}
-	fprintf(stderr, "SHA0 over %ld bytes of %s: ", r, infile);
-
-	SHA0Input(&ctx, buffer, r);
-	SHA0FinalBits(&ctx, 0, 0);
+	// SHA0Input(&ctx, in_message, r);
+	// SHA0FinalBits(&ctx, 0, 0);
+	// SHA0Result(&ctx, dgst);
 	uint8_t dgst[SHA0HashSize];
-	SHA0Result(&ctx, dgst);
+	get_hash(in_message, r, dgst);
 
+	// clock_t toc= clock(); // TIMING
 	for (int i = 0; i < SHA0HashSize; i++) {
-		fprintf(stderr, "%02x", dgst[i]);
-	}
-	fprintf(stderr, "\n");
-	free(buffer);
+		fprintf(stdout, "%02x", dgst[i]);
+	}	
+	// float sec = (float)(toc - tic) / CLOCKS_PER_SEC; // TIMING
+	// printf("\n1 it took %e s\n",sec); // TIMING
 	return 0;
 }
