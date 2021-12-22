@@ -1,3 +1,5 @@
+# Present info
+Hi Petr, glad that you have discovered the hint. Here are the tools that will help you in cracking  the cipher. Use them wisely and be smart. David
 # sha0
 This is an implementation of the SHA-0 algorithm. Note that SHA-0 is a BROKEN
 algorithm; this program has been created to verify old, broken signatures.
@@ -11,12 +13,11 @@ fgrieu, who
 [did an excellent outline on the code differences](https://crypto.stackexchange.com/questions/62055/where-can-i-find-the-description-of-sha0-algorithm).
 I'm basically just the monkey gluing pieces together :)
 
-## Usage
-```
-$ echo -n foobar >foobar
-$ ./sha0 foobar
-SHA0 over 6 bytes of foobar: d3fb2f31117cc1481f6c5dc1905e06892a8ca38b
-```
+## Usage PYTHON
+Navigate the python interface.py code for example call. There are two functions equal in result provided for testing. Build your code on top of that.
+## Usage C
+This code can be also compiled using makefile. You will get executable this way and can use the *get_hash_subprocess()* python function.
+For faster option you will need to compile dynamic library yourself so the *get_hash_dll()* can be used.
 
 ## License
 IETF license, see LICENSE file.
